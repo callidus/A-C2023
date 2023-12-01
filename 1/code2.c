@@ -23,7 +23,7 @@ char *strrstr(const char *s, const char *m) {
 
 
 void findIdx(char* line, int len, IndexData* out) {
-
+	char* t = NULL;
 	const char* data[9];
 	data[0] = "one";
 	data[1] = "two";
@@ -37,23 +37,20 @@ void findIdx(char* line, int len, IndexData* out) {
 
 	out->idx = 10000;
 	out->val = -100;
+
+	out->ridx = -10000;
+	out->rval = -100;
+
 	for(int i=0; i<9; ++i) {
-		char* t = strstr(line, data[i]);
-		if(t) {
+		if((t = strstr(line, data[i]))) {
 			int idx = t - line;
 			if(idx < out->idx){
 				out->idx = idx;
 				out->val = i + 1;
 			}
 		}
-	}
 
-
-	out->ridx = -10000;
-	out->rval = -100;
-	for(int i=0; i<9; ++i) {
-		char* t = strrstr(line, data[i]);
-		if(t) {
+		if((t = strrstr(line, data[i]))) {
 			int idx = t - line;
 			if(idx > out->ridx){
 				out->ridx = idx;
@@ -61,7 +58,6 @@ void findIdx(char* line, int len, IndexData* out) {
 			}
 		}
 	}
-
 }
 
 
