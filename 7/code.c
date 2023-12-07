@@ -23,7 +23,7 @@ const char* name[] = {
  "High card"
 };
 
-typedef struct { char hand[6]; char ordr[6]; int bid; HandType type; } Play;
+typedef struct { char hand[6]; int bid; HandType type; } Play;
 
 char lut[] = "AKQJT98765432";
 
@@ -34,12 +34,6 @@ int cardToIdx(char c) {
     int x = 0;
     while(lut[x++] != c);
     return x-1;
-}
-
-int cardCmp(const void* a, const void* b) {
-    int x = cardToIdx(*(const char*)a);
-    int y = cardToIdx(*(const char*)b);
-    return x - y;
 }
 
 HandType handType(char* hand) {
@@ -93,10 +87,7 @@ int main(int argc, char** argv) {
     memset(play, 0, 1024 * sizeof(Play));
     FILE* fp = fopen("data.txt", "r");
     while(fscanf(fp, "%s %i\n", play[num].hand, &play[num].bid) == 2)  {
-        // /printf("%s %i\n", play[num].hand, play[num].bid);
-        memcpy(play[num].ordr, play[num].hand, 6);
-        qsort(play[num].ordr, 5, 1, cardCmp);
-        play[num].type = handType(play[num].ordr);
+        play[num].type = handType(play[num].hand);
         num++;
     }
 
